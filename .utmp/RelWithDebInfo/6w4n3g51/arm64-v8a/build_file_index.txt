@@ -1,0 +1,2 @@
+C:\Users\domwu\Unity\2025_LitStage_Moby_02\2025_LitStage_Moby_02\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+C:\Users\domwu\Unity\2025_LitStage_Moby_02\2025_LitStage_Moby_02\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt
