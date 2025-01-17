@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efacc41b4d21cfa458fd5af8b13d5803, type: 3}
+  m_Name: YellowBall_SceneDec
+  m_EditorClassIdentifier: 
+  Poolsize: 1
+  decorationPrefabs:
+  - {fileID: 7683524315384726199, guid: f340f0228c80c7345b051d9605d21296, type: 3}
+  executeSceneLabels: 1
+  targets: 1
+  targetPhysicsLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  placement: 1
+  placementDirection: {x: 0, y: -1, z: 0}
+  selectBehind: 1
+  rayOffset: {x: 0, y: 0, z: 0.1}
+  spawnHierarchy: 0
+  distributionType: 0
+  gridDistribution:
+    spacingX: 1
+    spacingY: 1
+  simplexDistribution:
+    pointSamplingConfig:
+      pointsPerUnitX: 0
+      pointsPerUnitY: 0
+      noiseOffsetRadius: 0
+  staggeredConcentricDistribution:
+    stepSize: 0
+  randomDistribution:
+    numPerUnit: 10
+  masks: []
+  constraints: []
+  modifiers: []
+  discardParentScaling: 1
+  lifetime: 0
+  DrawDebugRaysAndImpactPoints: 0
