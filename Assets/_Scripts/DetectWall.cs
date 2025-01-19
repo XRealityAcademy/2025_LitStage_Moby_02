@@ -16,18 +16,25 @@ namespace Meta.XR.MRUtilityKit
     public class DetectWall : MonoBehaviour
     {
         private OVRCameraRig _cameraRig;
+        private Vector3 instantiatePosition = new Vector3(0, 0, 0);
+        private Quaternion instantiateRotation = Quaternion.identity;
         public GameObject _debugCube;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-
+            Instantiate(_debugCube,instantiatePosition, instantiateRotation);
             
         }
 
         // Update is called once per frame
         void Update()
         {
-
+           // GetBestPoseFromRaycastDebugger();
+            if(OVRInput.GetDown(OVRInput.RawButton.RHandTrigger))
+            {
+                GetBestPoseFromRaycastDebugger();
+            }
+            
             
         }
 
@@ -35,11 +42,12 @@ namespace Meta.XR.MRUtilityKit
 
 
 
-       public void GetBestPoseFromRaycastDebugger(bool isOn)
+       public void GetBestPoseFromRaycastDebugger()
         {
-            if (isOn)
-            {
+            
+               // Instantiate(_debugCube, new Vector3(1,1,1), instantiateRotation);
                 var ray = GetControllerRay();
+                Instantiate(_debugCube, ray.origin, Quaternion.identity);
                 MRUKAnchor sceneAnchor = null;
                 var positioningMethod = MRUK.PositioningMethod.DEFAULT;
                 var bestPose = MRUK.Instance?.GetCurrentRoom()?.GetBestPoseFromRaycast(ray, Mathf.Infinity,
@@ -50,7 +58,7 @@ namespace Meta.XR.MRUtilityKit
                     _debugCube.transform.rotation = bestPose.Value.rotation;
                     _debugCube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);                            
                 }
-            }
+            
         }
 
         private Ray GetControllerRay()
@@ -83,8 +91,8 @@ namespace Meta.XR.MRUtilityKit
                     rayDirection = _cameraRig.centerEyeAnchor.forward;
                 }
             }
-
             return new Ray(rayOrigin, rayDirection);
+
         }
     }
 }
