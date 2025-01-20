@@ -18,11 +18,13 @@ namespace Meta.XR.MRUtilityKit
         private OVRCameraRig _cameraRig;
         private Vector3 instantiatePosition = new Vector3(0, 0, 0);
         private Quaternion instantiateRotation = Quaternion.identity;
-        public GameObject _debugCube;
+        private GameObject _debugCube;
+       // public GameObject _debugCube;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            Instantiate(_debugCube,instantiatePosition, instantiateRotation);
+            CreateDebugPrimitives();
+           // Instantiate(_debugCube,instantiatePosition, instantiateRotation);
             
         }
 
@@ -32,12 +34,34 @@ namespace Meta.XR.MRUtilityKit
            // GetBestPoseFromRaycastDebugger();
             if(OVRInput.GetDown(OVRInput.RawButton.RHandTrigger))
             {
-                GetBestPoseFromRaycastDebugger();
+               GetBestPoseFromRaycastDebugger();
             }
             
             
         }
+        private void CreateDebugPrimitives()
+        {
+            _debugCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            _debugCube.name = "SceneDebugger_Cube";
+            _debugCube.GetComponent<Renderer>().material.color = Color.green;
+            _debugCube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            _debugCube.GetComponent<Collider>().enabled = false;
+           // _debugCube.SetActive(false);
 
+            // _debugSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            // _debugSphere.name = "SceneDebugger_Sphere";
+            // _debugSphere.GetComponent<Renderer>().material.color = Color.green;
+            // _debugSphere.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            // _debugSphere.GetComponent<Collider>().enabled = false;
+            // _debugSphere.SetActive(false);
+
+            // _debugNormal = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            // _debugNormal.name = "SceneDebugger_Normal";
+            // _debugNormal.GetComponent<Renderer>().material.color = Color.green;
+            // _debugNormal.transform.localScale = new Vector3(0.02f, 0.1f, 0.02f);
+            // _debugNormal.GetComponent<Collider>().enabled = false;
+            // _debugNormal.SetActive(false);
+        }
 
 
 
@@ -47,7 +71,7 @@ namespace Meta.XR.MRUtilityKit
             
                // Instantiate(_debugCube, new Vector3(1,1,1), instantiateRotation);
                 var ray = GetControllerRay();
-                Instantiate(_debugCube, ray.origin, Quaternion.identity);
+               // Instantiate(_debugCube, ray.origin, Quaternion.identity);
                 MRUKAnchor sceneAnchor = null;
                 var positioningMethod = MRUK.PositioningMethod.DEFAULT;
                 var bestPose = MRUK.Instance?.GetCurrentRoom()?.GetBestPoseFromRaycast(ray, Mathf.Infinity,
@@ -94,5 +118,7 @@ namespace Meta.XR.MRUtilityKit
             return new Ray(rayOrigin, rayDirection);
 
         }
+
+        
     }
 }

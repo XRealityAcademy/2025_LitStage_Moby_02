@@ -15,7 +15,7 @@ namespace Meta.XR.MRUtilityKit
 {
     public class PlaceMesh : MonoBehaviour
     {
-        public ScriptableObject decoObj;
+        public GameObject mobyDickObj;
         public GameObject YCubePrefab;
         public GameObject PCubePrefab;
         [Tooltip("When false, use the interaction system already present in the scene")]
@@ -75,7 +75,7 @@ namespace Meta.XR.MRUtilityKit
 
             _globalMeshEffectMesh = GetGlobalMeshEffectMesh();
             _spaceMapGPU = GetSpaceMapGPU();
-            Instantiate(decoObj, Vector3.zero, Quaternion.identity);
+           // Instantiate(decoObj, Vector3.zero, Quaternion.identity);
 
 
         }
@@ -735,6 +735,22 @@ namespace Meta.XR.MRUtilityKit
                             _debugCube.transform.position = bestPose.Value.position;
                             _debugCube.transform.rotation = bestPose.Value.rotation;
                             _debugCube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+                            if(OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
+                            {
+                                Vector3 offsetWall = _debugNormal.transform.up * 1f;
+                                mobyDickObj.transform.position = _debugNormal.transform.position + offsetWall;
+                                //Instantiate(mobyDickObj, mobyDickObj.transform.position, _debugCube.transform.rotation);
+                                Instantiate(mobyDickObj, _debugCube.transform.position, _debugCube.transform.rotation);
+                               // _debugCube.SetActive(false);
+                            }
+
+                            SetLogsText("\n[{0}]\nAnchor: {1}\nPose Position: {2}\nPose Rotation: {3}",
+                                nameof(GetBestPoseFromRaycastDebugger),
+                                sceneAnchor.name,
+                                bestPose.Value.position,
+                                bestPose.Value.rotation
+                            );
                             SetLogsText("\n[{0}]\nAnchor: {1}\nPose Position: {2}\nPose Rotation: {3}",
                                 nameof(GetBestPoseFromRaycastDebugger),
                                 sceneAnchor.name,
