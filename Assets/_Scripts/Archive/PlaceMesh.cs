@@ -748,10 +748,13 @@ namespace Meta.XR.MRUtilityKit
 
                             if(OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
                             {
-                                Vector3 offsetWall = _debugCube.transform.up * 2f;
-                                mobyDickObj.transform.position =_debugCube.transform.position + offsetWall;
+                                Vector3 offsetWall = _debugCube.transform.up;
+                                mobyDickObj.transform.position =_debugCube.transform.position;
                                 //Instantiate(mobyDickObj, mobyDickObj.transform.position, _debugCube.transform.rotation);
-                                Instantiate(mobyDickObj,  _debugCube.transform.position,  _debugCube.transform.rotation);
+
+                                Vector3 wallOffset = _debugNormal.transform.right;
+                                Vector3 mobyDickObj_pos = _debugCube.transform.position;
+                                Instantiate(mobyDickObj, mobyDickObj_pos, _debugCube.transform.rotation);
 
 
                                // _debugCube.SetActive(false);

@@ -3729,7 +3729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xQuad: {fileID: 408290002}
   xQuadMaterial: {fileID: 2100000, guid: ca9a0b868e4237f4dadf5137d7fcdae2, type: 2}
-  mobyDickObj: {fileID: 7683524315384726199, guid: f340f0228c80c7345b051d9605d21296, type: 3}
+  mobyDickObj: {fileID: 2553206832476669998, guid: cb85774dc43ff9645a9d3242b7e915d0, type: 3}
   YCubePrefab: {fileID: 7940044810799729666, guid: 723e0a3a84488724fb69b7862c5110b0, type: 3}
   PCubePrefab: {fileID: 7123910680630537799, guid: 2dba63ea781cbe645a4e885ea2b256f1, type: 3}
   SetupInteractions: 1
