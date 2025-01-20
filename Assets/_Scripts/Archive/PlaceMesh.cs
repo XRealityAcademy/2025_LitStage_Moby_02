@@ -15,6 +15,8 @@ namespace Meta.XR.MRUtilityKit
 {
     public class PlaceMesh : MonoBehaviour
     {
+        public GameObject xQuad;
+        public Material xQuadMaterial;
         public GameObject mobyDickObj;
         public GameObject YCubePrefab;
         public GameObject PCubePrefab;
@@ -49,7 +51,6 @@ namespace Meta.XR.MRUtilityKit
         private EffectMesh _globalMeshEffectMesh;
         private SpaceMapGPU _spaceMapGPU;
         private GameObject _debugAnchor;
-
         private GameObject _debugCube;
         private GameObject _debugSphere;
         private Action _debugAction;
@@ -423,12 +424,13 @@ namespace Meta.XR.MRUtilityKit
         }
         private void CreateDebugPrimitives()
         {
-            _debugCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            //_debugCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            _debugCube = xQuad;
             _debugCube.name = "SceneDebugger_Cube";
-            _debugCube.GetComponent<Renderer>().material.color = Color.green;
+           // _debugCube.GetComponent<Renderer>().material=xQuadMaterial;
             _debugCube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             _debugCube.GetComponent<Collider>().enabled = false;
-            _debugCube.SetActive(false);
+            _debugCube.SetActive(true);
 
             _debugSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             _debugSphere.name = "SceneDebugger_Sphere";
@@ -723,6 +725,7 @@ namespace Meta.XR.MRUtilityKit
                         var ray = GetControllerRay();
                         MRUKAnchor sceneAnchor = null;
                         var positioningMethod = MRUK.PositioningMethod.DEFAULT;
+
                         if (positioningMethodDropdown)
                         {
                             positioningMethod = (MRUK.PositioningMethod)positioningMethodDropdown.value;
@@ -732,16 +735,25 @@ namespace Meta.XR.MRUtilityKit
                             new LabelFilter(), out sceneAnchor, positioningMethod);
                         if (bestPose.HasValue && sceneAnchor && _debugCube)
                         {
-                            _debugCube.transform.position = bestPose.Value.position;
-                            _debugCube.transform.rotation = bestPose.Value.rotation;
-                            _debugCube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                             
+
+                            xQuad.transform.position = bestPose.Value.position;
+                            xQuad.transform.rotation = bestPose.Value.rotation;
+                             _debugCube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+                            // Instantiate(xQuad, _debugCube.transform.position,  _debugCube.transform.rotation);
+                            //  xQuad.transform.position = bestPose.Value.position;
+                            //  xQuad.transform.rotation = bestPose.Value.rotation;
+
 
                             if(OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
                             {
-                                Vector3 offsetWall = _debugNormal.transform.up * 1f;
-                                mobyDickObj.transform.position = _debugNormal.transform.position + offsetWall;
+                                Vector3 offsetWall = _debugCube.transform.up * 2f;
+                                mobyDickObj.transform.position =_debugCube.transform.position + offsetWall;
                                 //Instantiate(mobyDickObj, mobyDickObj.transform.position, _debugCube.transform.rotation);
-                                Instantiate(mobyDickObj, _debugCube.transform.position, _debugCube.transform.rotation);
+                                Instantiate(mobyDickObj,  _debugCube.transform.position,  _debugCube.transform.rotation);
+
+
                                // _debugCube.SetActive(false);
                             }
 
@@ -751,12 +763,7 @@ namespace Meta.XR.MRUtilityKit
                                 bestPose.Value.position,
                                 bestPose.Value.rotation
                             );
-                            SetLogsText("\n[{0}]\nAnchor: {1}\nPose Position: {2}\nPose Rotation: {3}",
-                                nameof(GetBestPoseFromRaycastDebugger),
-                                sceneAnchor.name,
-                                bestPose.Value.position,
-                                bestPose.Value.rotation
-                            );
+
                         }
                     };
                 }
