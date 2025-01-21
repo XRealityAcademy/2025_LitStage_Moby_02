@@ -624,50 +624,6 @@ namespace Meta.XR.MRUtilityKit
             Debug.Log("Cube placed successfully at the center of the largest floor surface.");
         }
 
-        public void PlaceLargestCeilingSurface(bool isOn)
-        {
-            if (!isOn)
-            {
-                Debug.Log("PlaceLargestSurface is turned off.");
-                return;
-            }
-
-            // Ensure the MRUK instance is initialized
-            if (MRUK.Instance == null || !MRUK.Instance.IsInitialized)
-            {
-                Debug.LogError("MRUK instance is not initialized. Make sure to initialize it before using.");
-                return;
-            }
-
-            // Get the current room from MRUK
-            var currentRoom = MRUK.Instance.GetCurrentRoom();
-            if (currentRoom == null)
-            {
-                Debug.LogError("No current room found. Ensure the room data is loaded.");
-                return;
-            }
-
-            // Find the largest floor surface in the current room
-            var ceilingSurface = MRUKAnchor.SceneLabels.CEILING;
-            var largestCeilingSurface = currentRoom.FindLargestSurface(ceilingSurface);
-
-            if (largestCeilingSurface == null)
-            {
-                Debug.LogError("Largest floor surface not found in the current room.");
-                return;
-            }
-
-            // Determine the center and rotation of the largest floor surface
-            var ceilingCenter = largestCeilingSurface.transform.position;
-            var ceilingRotation = largestCeilingSurface.transform.rotation;
-
-            // Instantiate the cube at the center of the largest floor surface
-            placedCube = Instantiate(PCubePrefab);
-            placedCube.transform.position = ceilingCenter;
-            placedCube.transform.rotation = ceilingRotation;
-
-            Debug.Log("Cube placed successfully at the center of the largest floor surface.");
-        }
 
         public void GetClosestSurfacePositionDebugger(bool isOn)
         {
@@ -714,6 +670,187 @@ namespace Meta.XR.MRUtilityKit
                     e.StackTrace);
             }
         }
+        public void PlaceLargestFlatSurface(bool isOn)
+        {
+            if (!isOn)
+            {
+                return;
+            }
+
+            // Ensure the MRUK instance is initialized
+            if (MRUK.Instance == null || !MRUK.Instance.IsInitialized)
+            {
+                return;
+            }
+
+            // Get the current room from MRUK
+            var currentRoom = MRUK.Instance.GetCurrentRoom();
+            if (currentRoom == null)
+            {
+                return;
+            }
+
+            // Find the largest table, bed, floor surface in the current room
+            var tableSurface = MRUKAnchor.SceneLabels.TABLE;
+            var largestTableSurface = currentRoom.FindLargestSurface(tableSurface);
+
+
+            // Determine the center and rotation of the largest floor surface
+            var tableCenter = largestTableSurface.transform.position;
+            var tableRotation = largestTableSurface.transform.rotation;
+        }
+
+        public void SpawnOnFlatSurface(bool isOn)
+        {
+            try
+            {
+                if (isOn)
+                {
+                    _debugAction = () =>
+                    {
+                        var origin = GetControllerRay().origin;
+                        var surfacePosition = Vector3.zero;
+                        var normal = Vector3.up;
+                        MRUKAnchor closestAnchor = null;
+                        var ray = GetControllerRay();
+                        MRUKAnchor sceneAnchor = null;
+                        var positioningMethod = MRUK.PositioningMethod.DEFAULT;
+                        if (positioningMethodDropdown)
+                        {
+                            positioningMethod = (MRUK.PositioningMethod)positioningMethodDropdown.value;
+                        }
+                        // Get the current room
+                        var currentRoom = MRUK.Instance?.GetCurrentRoom();
+                        if (currentRoom == null)
+                        {
+                            SetLogsText("\n[{0}]\nCurrent room is null!", nameof(SpawnOnFlatSurface));
+                            return;
+                        }
+                        // Find the largest horizontal and vertical surfaces
+                        var horizontalSurfaces = new[] {
+                            MRUKAnchor.SceneLabels.TABLE,
+                            MRUKAnchor.SceneLabels.BED,
+                            MRUKAnchor.SceneLabels.FLOOR
+                        };
+                        var verticalSurfaces = new[] {
+                            MRUKAnchor.SceneLabels.WALL_FACE,
+                            MRUKAnchor.SceneLabels.SCREEN,
+                            MRUKAnchor.SceneLabels.STORAGE,
+                            MRUKAnchor.SceneLabels.CEILING
+                        };
+                        var bestPose = MRUK.Instance?.GetCurrentRoom()?.GetBestPoseFromRaycast(ray, Mathf.Infinity,
+                            new LabelFilter(), out sceneAnchor, positioningMethod);
+                        var surfaceNormalDir = MRUK.Instance?.GetCurrentRoom()?.GetFacingDirection(sceneAnchor);
+
+                        MRUK.Instance?.GetCurrentRoom()
+                            ?.TryGetClosestSurfacePosition(origin, out surfacePosition, out closestAnchor, out normal);
+                        ShowHitNormal(surfacePosition, normal);
+
+                       // var bestPose = currentRoom.GetBestPoseFromRaycast(ray, Mathf.Infinity, new LabelFilter(), out sceneAnchor, positioningMethod);
+                        if (bestPose.HasValue && sceneAnchor != null && _debugCube != null)
+                        {
+                            _debugCube.transform.position = bestPose.Value.position;
+                            _debugCube.transform.rotation = bestPose.Value.rotation;
+                            // Check if the surface is horizontal or vertical
+                            bool isHorizontal = false, isVertical = false;
+                            // Allow only horizontal surfaces for table and bed
+                            //Vector3 surfaceNormal = sceneAnchor.transform.rotation * Vector3.up; // Allow only horizontal surfaces for table and bed
+                            // Calculate the surface normal based on the anchor's pose or fallback to predefined logic 
+                            //Vector3 surfaceNormal = CalculateSurfaceNormal(sceneAnchor, bestPose.Value.rotation);
+                           
+                            //Debug.Log("sceneAnchor.Label:" + sceneAnchor.Label.ToString()); //sceneAnchor.Label
+                            if (sceneAnchor.HasAnyLabel(MRUKAnchor.SceneLabels.TABLE) || sceneAnchor.HasAnyLabel(MRUKAnchor.SceneLabels.BED)) 
+                            { 
+                                Debug.Log("sceneAnchor.Label:" + sceneAnchor.Label.ToString()+ " normal :" + normal.ToString() ); //sceneAnchor.Label
+                                if (Vector3.Dot(normal, Vector3.up) > 0.4f) // Check if normal is pointing upwards (close to horizontal) 
+                                { 
+                                    isHorizontal = true; 
+                                    
+                                    //Debug.Log("sceneAnchor.Label:" + sceneAnchor.Label.ToString()+ "  Dot surfaceNormal :" + Vector3.Dot((Vector3)surfaceNormalDir, Vector3.up).ToString() ); //sceneAnchor.Label
+                                } 
+                                else 
+                                { 
+                                    isVertical = true; 
+                                } 
+                            } 
+                            else 
+                            { // General checks for other horizontal and vertical surfaces
+                            
+                                foreach (var label in horizontalSurfaces) 
+                                { 
+                                    if (sceneAnchor.HasAnyLabel(label)) 
+                                    { 
+                                        isHorizontal = true; 
+                                        break; 
+                                    } 
+                                } 
+                                
+                                foreach (var label in verticalSurfaces) 
+                                { 
+                                    if (sceneAnchor.HasAnyLabel(label)) 
+                                    { 
+                                        isVertical = true; 
+                                        break; 
+                                    } 
+                                }          
+                            }
+
+                            if (isHorizontal)
+                            {
+                                // Tint xQuad to yellow and enable spawning
+                                _debugCube.GetComponent<Renderer>().material.color = Color.yellow;
+                                if (OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger) && _debugCube != null)
+                                {
+                                    Vector3 offsetWall = _debugCube.transform.up;
+                                    mobyDickObj.transform.position =_debugCube.transform.position;
+                                    //Instantiate(mobyDickObj, mobyDickObj.transform.position, _debugCube.transform.rotation);
+
+                                    Vector3 wallOffset = _debugNormal.transform.right;
+                                    Vector3 mobyDickObj_pos = _debugCube.transform.position;
+                                    Instantiate(mobyDickObj, mobyDickObj_pos, _debugCube.transform.rotation);
+                                }
+                            }
+                            else if (isVertical)
+                            {
+                                // Tint xQuad to red and disable spawning
+                                _debugCube.GetComponent<Renderer>().material.color = Color.red;
+                            }
+                            SetLogsText("\n[{0}]\nAnchor: {1}\nPose Position: {2}\nPose Rotation: {3}",
+                                nameof(SpawnOnFlatSurface),
+                                sceneAnchor.name,
+                                bestPose.Value.position,
+                                bestPose.Value.rotation
+                            );
+                        }
+                    };
+                }
+                else
+                {
+                    _debugAction = null;
+                }
+                if (_debugCube != null)
+                {
+                    _debugCube.SetActive(isOn);
+                }
+            }
+            catch (Exception e)
+            {
+                SetLogsText("\n[{0}]\n {1}\n{2}",
+                    nameof(SpawnOnFlatSurface),
+                    e.Message,
+                    e.StackTrace);
+            }
+        }
+
+        private Vector3 CalculateSurfaceNormal(MRUKAnchor anchor, Quaternion rotation) 
+        { 
+            // If the anchor provides orientation, use it
+            if (anchor?.transform != null) 
+            {
+                return anchor.transform.up; // Assuming Transform.up represents the normal 
+            } // Otherwise, calculate normal from rotation
+            return rotation * Vector3.up;
+        }
        public void GetBestPoseFromRaycastDebugger(bool isOn)
         {
             try
@@ -725,6 +862,18 @@ namespace Meta.XR.MRUtilityKit
                         var ray = GetControllerRay();
                         MRUKAnchor sceneAnchor = null;
                         var positioningMethod = MRUK.PositioningMethod.DEFAULT;
+                        // Find the largest table, bed, floor surface in the current room
+                        // Find the largest Ceiling, WallFace, Screen, Storage surface in the current room
+                        var currentRoom = MRUK.Instance.GetCurrentRoom();
+
+                        var tableSurface = MRUKAnchor.SceneLabels.TABLE;
+                        var largestTableSurface = currentRoom.FindLargestSurface(tableSurface);
+
+                        var ceilingSurface = MRUKAnchor.SceneLabels.CEILING;
+                        var largestCeilingSurface = currentRoom.FindLargestSurface(ceilingSurface);
+
+                        var wallFaceSurface = MRUKAnchor.SceneLabels.WALL_FACE;
+                        var largestWallFaceSurface = currentRoom.FindLargestSurface(wallFaceSurface);
 
                         if (positioningMethodDropdown)
                         {
@@ -735,30 +884,27 @@ namespace Meta.XR.MRUtilityKit
                             new LabelFilter(), out sceneAnchor, positioningMethod);
                         if (bestPose.HasValue && sceneAnchor && _debugCube)
                         {
+                            if(true)
+                            {
+                               xQuad.transform.position = bestPose.Value.position;
+                               xQuad.transform.rotation = bestPose.Value.rotation;
+                               _debugCube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+                                if(OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
+                                {
+                                    Vector3 offsetWall = _debugCube.transform.up;
+                                    mobyDickObj.transform.position =_debugCube.transform.position;
+                                    //Instantiate(mobyDickObj, mobyDickObj.transform.position, _debugCube.transform.rotation);
+
+                                    Vector3 wallOffset = _debugNormal.transform.right;
+                                    Vector3 mobyDickObj_pos = _debugCube.transform.position;
+                                    Instantiate(mobyDickObj, mobyDickObj_pos, _debugCube.transform.rotation);
+                                    // _debugCube.SetActive(false);
+                                }
+                            }
                              
 
-                            xQuad.transform.position = bestPose.Value.position;
-                            xQuad.transform.rotation = bestPose.Value.rotation;
-                             _debugCube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-                            // Instantiate(xQuad, _debugCube.transform.position,  _debugCube.transform.rotation);
-                            //  xQuad.transform.position = bestPose.Value.position;
-                            //  xQuad.transform.rotation = bestPose.Value.rotation;
-
-
-                            if(OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
-                            {
-                                Vector3 offsetWall = _debugCube.transform.up;
-                                mobyDickObj.transform.position =_debugCube.transform.position;
-                                //Instantiate(mobyDickObj, mobyDickObj.transform.position, _debugCube.transform.rotation);
-
-                                Vector3 wallOffset = _debugNormal.transform.right;
-                                Vector3 mobyDickObj_pos = _debugCube.transform.position;
-                                Instantiate(mobyDickObj, mobyDickObj_pos, _debugCube.transform.rotation);
-
-
-                               // _debugCube.SetActive(false);
-                            }
 
                             SetLogsText("\n[{0}]\nAnchor: {1}\nPose Position: {2}\nPose Rotation: {3}",
                                 nameof(GetBestPoseFromRaycastDebugger),

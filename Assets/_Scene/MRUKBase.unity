@@ -8696,9 +8696,9 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8477560932573506882}
-        m_TargetAssemblyTypeName: Meta.XR.MRUtilityKit.SceneDebugger, meta.xr.mrutilitykit
-        m_MethodName: DisplaySpaceMap
+      - m_Target: {fileID: 8705041587226526645}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8708,9 +8708,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 8705041587226526645}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
+      - m_Target: {fileID: 1241972787}
+        m_TargetAssemblyTypeName: Meta.XR.MRUtilityKit.PlaceMesh, Assembly-CSharp
+        m_MethodName: SpawnOnFlatSurface
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14704,7 +14704,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SpaceMap
+  m_text: SpawnOnFlatSurface
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -14867,7 +14867,7 @@ GameObject:
   - component: {fileID: 556776513337079649}
   - component: {fileID: 5009912427622489775}
   m_Layer: 5
-  m_Name: SpaceMapGPU
+  m_Name: SpawnOnFlatSurface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17497,45 +17497,21 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1241972787}
-        m_TargetAssemblyTypeName: Meta.XR.MRUtilityKit.PlaceMesh, Assembly-CSharp
-        m_MethodName: PlaceLargestFloorSurface
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1241972787}
-        m_TargetAssemblyTypeName: Meta.XR.MRUtilityKit.PlaceMesh, Assembly-CSharp
-        m_MethodName: PlaceLargestCeilingSurface
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1241972787}
-        m_TargetAssemblyTypeName: Meta.XR.MRUtilityKit.PlaceMesh, Assembly-CSharp
-        m_MethodName: PlaceLargestTableSurface
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 563806421}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1241972787}
+        m_TargetAssemblyTypeName: Meta.XR.MRUtilityKit.PlaceMesh, Assembly-CSharp
+        m_MethodName: GetBestPoseFromRaycastDebugger
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
