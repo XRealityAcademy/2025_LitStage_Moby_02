@@ -425,7 +425,8 @@ namespace Meta.XR.MRUtilityKit
         private void CreateDebugPrimitives()
         {
             //_debugCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            _debugCube = xQuad;
+            GameObject XQuad  = Instantiate( xQuad, Vector3.zero, Quaternion.identity);
+            _debugCube = XQuad;
             _debugCube.name = "SceneDebugger_Cube";
            // _debugCube.GetComponent<Renderer>().material=xQuadMaterial;
             _debugCube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
@@ -502,128 +503,6 @@ namespace Meta.XR.MRUtilityKit
             }
         }
 
-        public void PlaceKeyWallSurface(bool isOn)
-        {
-            if (!isOn)
-            {
-                var wallScale = Vector2.zero;
-                var keyWall = MRUK.Instance?.GetCurrentRoom()?.GetKeyWall(out wallScale);
-                if (keyWall != null)
-                {
-                    var anchorCenter = keyWall.GetAnchorCenter();
-                    if (m_debugCube != null)
-                    {
-                        m_debugCube.transform.localScale = new Vector3(wallScale.x, wallScale.y, 0.05f);
-                        m_debugCube.transform.localPosition = anchorCenter;
-
-                        m_debugCube.transform.localRotation = keyWall.transform.localRotation;
-                    }
-                }
-
-                var wallCenter = keyWall.transform.position;
-                var wallRotation = keyWall.transform.rotation;
-
-                // Instantiate the cube at the center of the key wall
-                m_placedCube = Instantiate(YCubePrefab);
-                m_placedCube.transform.position = wallCenter;
-                m_placedCube.transform.rotation = wallRotation;
-
-                // Adjust the cube size to a reasonable scale if necessary
-                m_placedCube.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f); // Default cube siz
-            }
-
-        }
-
-        public void PlaceLargestFloorSurface(bool isOn)
-        {
-            if (!isOn)
-            {
-                Debug.Log("PlaceLargestSurface is turned off.");
-                return;
-            }
-
-            // Ensure the MRUK instance is initialized
-            if (MRUK.Instance == null || !MRUK.Instance.IsInitialized)
-            {
-                Debug.LogError("MRUK instance is not initialized. Make sure to initialize it before using.");
-                return;
-            }
-
-            // Get the current room from MRUK
-            var currentRoom = MRUK.Instance.GetCurrentRoom();
-            if (currentRoom == null)
-            {
-                Debug.LogError("No current room found. Ensure the room data is loaded.");
-                return;
-            }
-
-            // Find the largest floor surface in the current room
-            var floorSurface = MRUKAnchor.SceneLabels.FLOOR;
-            var largestFloorSurface = currentRoom.FindLargestSurface(floorSurface);
-
-            if (largestFloorSurface == null)
-            {
-                Debug.LogError("Largest floor surface not found in the current room.");
-                return;
-            }
-
-            // Determine the center and rotation of the largest floor surface
-            var floorCenter = largestFloorSurface.transform.position;
-            var floorRotation = largestFloorSurface.transform.rotation;
-
-            // Instantiate the cube at the center of the largest floor surface
-            placedCube = Instantiate(PCubePrefab);
-            placedCube.transform.position = floorCenter;
-            placedCube.transform.rotation = floorRotation;
-
-            Debug.Log("Cube placed successfully at the center of the largest floor surface.");
-        }
-
-        public void PlaceLargestTableSurface(bool isOn)
-        {
-            if (!isOn)
-            {
-                Debug.Log("PlaceLargestSurface is turned off.");
-                return;
-            }
-
-            // Ensure the MRUK instance is initialized
-            if (MRUK.Instance == null || !MRUK.Instance.IsInitialized)
-            {
-                Debug.LogError("MRUK instance is not initialized. Make sure to initialize it before using.");
-                return;
-            }
-
-            // Get the current room from MRUK
-            var currentRoom = MRUK.Instance.GetCurrentRoom();
-            if (currentRoom == null)
-            {
-                Debug.LogError("No current room found. Ensure the room data is loaded.");
-                return;
-            }
-
-            // Find the largest floor surface in the current room
-            var tableSurface = MRUKAnchor.SceneLabels.TABLE;
-            var largestTableSurface = currentRoom.FindLargestSurface(tableSurface);
-
-            if (largestTableSurface == null)
-            {
-                Debug.LogError("Largest floor surface not found in the current room.");
-                return;
-            }
-
-            // Determine the center and rotation of the largest floor surface
-            var tableCenter = largestTableSurface.transform.position;
-            var tableRotation = largestTableSurface.transform.rotation;
-
-            // Instantiate the cube at the center of the largest floor surface
-            placedCube = Instantiate(PCubePrefab);
-            placedCube.transform.position = tableCenter;
-            placedCube.transform.rotation = tableRotation;
-
-            Debug.Log("Cube placed successfully at the center of the largest floor surface.");
-        }
-
 
         public void GetClosestSurfacePositionDebugger(bool isOn)
         {
@@ -669,35 +548,6 @@ namespace Meta.XR.MRUtilityKit
                     e.Message,
                     e.StackTrace);
             }
-        }
-        public void PlaceLargestFlatSurface(bool isOn)
-        {
-            if (!isOn)
-            {
-                return;
-            }
-
-            // Ensure the MRUK instance is initialized
-            if (MRUK.Instance == null || !MRUK.Instance.IsInitialized)
-            {
-                return;
-            }
-
-            // Get the current room from MRUK
-            var currentRoom = MRUK.Instance.GetCurrentRoom();
-            if (currentRoom == null)
-            {
-                return;
-            }
-
-            // Find the largest table, bed, floor surface in the current room
-            var tableSurface = MRUKAnchor.SceneLabels.TABLE;
-            var largestTableSurface = currentRoom.FindLargestSurface(tableSurface);
-
-
-            // Determine the center and rotation of the largest floor surface
-            var tableCenter = largestTableSurface.transform.position;
-            var tableRotation = largestTableSurface.transform.rotation;
         }
 
         public void SpawnOnFlatSurface(bool isOn)
@@ -753,11 +603,7 @@ namespace Meta.XR.MRUtilityKit
                             _debugCube.transform.rotation = bestPose.Value.rotation;
                             // Check if the surface is horizontal or vertical
                             bool isHorizontal = false, isVertical = false;
-                            // Allow only horizontal surfaces for table and bed
-                            //Vector3 surfaceNormal = sceneAnchor.transform.rotation * Vector3.up; // Allow only horizontal surfaces for table and bed
-                            // Calculate the surface normal based on the anchor's pose or fallback to predefined logic 
-                            //Vector3 surfaceNormal = CalculateSurfaceNormal(sceneAnchor, bestPose.Value.rotation);
-                           
+                          
                             //Debug.Log("sceneAnchor.Label:" + sceneAnchor.Label.ToString()); //sceneAnchor.Label
                             if (sceneAnchor.HasAnyLabel(MRUKAnchor.SceneLabels.TABLE) || sceneAnchor.HasAnyLabel(MRUKAnchor.SceneLabels.BED)) 
                             { 
@@ -799,7 +645,7 @@ namespace Meta.XR.MRUtilityKit
                             {
                                 // Tint xQuad to yellow and enable spawning
                                 _debugCube.GetComponent<Renderer>().material.color = Color.yellow;
-                                if (OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger) && _debugCube != null)
+                                if (OVRInput.GetDown(OVRInput.RawButton.A) && _debugCube != null)
                                 {
                                     Vector3 offsetWall = _debugCube.transform.up;
                                     mobyDickObj.transform.position =_debugCube.transform.position;
@@ -842,98 +688,6 @@ namespace Meta.XR.MRUtilityKit
             }
         }
 
-        private Vector3 CalculateSurfaceNormal(MRUKAnchor anchor, Quaternion rotation) 
-        { 
-            // If the anchor provides orientation, use it
-            if (anchor?.transform != null) 
-            {
-                return anchor.transform.up; // Assuming Transform.up represents the normal 
-            } // Otherwise, calculate normal from rotation
-            return rotation * Vector3.up;
-        }
-       public void GetBestPoseFromRaycastDebugger(bool isOn)
-        {
-            try
-            {
-                if (isOn)
-                {
-                    _debugAction = () =>
-                    {
-                        var ray = GetControllerRay();
-                        MRUKAnchor sceneAnchor = null;
-                        var positioningMethod = MRUK.PositioningMethod.DEFAULT;
-                        // Find the largest table, bed, floor surface in the current room
-                        // Find the largest Ceiling, WallFace, Screen, Storage surface in the current room
-                        var currentRoom = MRUK.Instance.GetCurrentRoom();
-
-                        var tableSurface = MRUKAnchor.SceneLabels.TABLE;
-                        var largestTableSurface = currentRoom.FindLargestSurface(tableSurface);
-
-                        var ceilingSurface = MRUKAnchor.SceneLabels.CEILING;
-                        var largestCeilingSurface = currentRoom.FindLargestSurface(ceilingSurface);
-
-                        var wallFaceSurface = MRUKAnchor.SceneLabels.WALL_FACE;
-                        var largestWallFaceSurface = currentRoom.FindLargestSurface(wallFaceSurface);
-
-                        if (positioningMethodDropdown)
-                        {
-                            positioningMethod = (MRUK.PositioningMethod)positioningMethodDropdown.value;
-                        }
-
-                        var bestPose = MRUK.Instance?.GetCurrentRoom()?.GetBestPoseFromRaycast(ray, Mathf.Infinity,
-                            new LabelFilter(), out sceneAnchor, positioningMethod);
-                        if (bestPose.HasValue && sceneAnchor && _debugCube)
-                        {
-                            if(true)
-                            {
-                               xQuad.transform.position = bestPose.Value.position;
-                               xQuad.transform.rotation = bestPose.Value.rotation;
-                               _debugCube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-
-                                if(OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
-                                {
-                                    Vector3 offsetWall = _debugCube.transform.up;
-                                    mobyDickObj.transform.position =_debugCube.transform.position;
-                                    //Instantiate(mobyDickObj, mobyDickObj.transform.position, _debugCube.transform.rotation);
-
-                                    Vector3 wallOffset = _debugNormal.transform.right;
-                                    Vector3 mobyDickObj_pos = _debugCube.transform.position;
-                                    Instantiate(mobyDickObj, mobyDickObj_pos, _debugCube.transform.rotation);
-                                    // _debugCube.SetActive(false);
-                                }
-                            }
-                             
-
-
-
-                            SetLogsText("\n[{0}]\nAnchor: {1}\nPose Position: {2}\nPose Rotation: {3}",
-                                nameof(GetBestPoseFromRaycastDebugger),
-                                sceneAnchor.name,
-                                bestPose.Value.position,
-                                bestPose.Value.rotation
-                            );
-
-                        }
-                    };
-                }
-                else
-                {
-                    _debugAction = null;
-                }
-
-                if (_debugCube != null)
-                {
-                    _debugCube.SetActive(isOn);
-                }
-            }
-            catch (Exception e)
-            {
-                SetLogsText("\n[{0}]\n {1}\n{2}",
-                    nameof(GetBestPoseFromRaycastDebugger),
-                    e.Message,
-                    e.StackTrace);
-            }
-        }
         public void RayCastDebugger(bool isOn)
         {
             try
