@@ -15,6 +15,7 @@ namespace Meta.XR.MRUtilityKit
 {
     public class PlaceMesh : MonoBehaviour
     {
+        public S1 s1;
         public GameObject xQuad;
         public Material xQuadMaterial;
         public GameObject mobyDickObj;
@@ -653,7 +654,11 @@ namespace Meta.XR.MRUtilityKit
 
                                     Vector3 wallOffset = _debugNormal.transform.right;
                                     Vector3 mobyDickObj_pos = _debugCube.transform.position;
-                                    Instantiate(mobyDickObj, mobyDickObj_pos, _debugCube.transform.rotation);
+                                    // Instantiate(mobyDickObj, mobyDickObj_pos, _debugCube.transform.rotation);
+
+                                    s1.PlaceGameObject(_debugCube.transform);
+                                    
+                                    
                                 }
                             }
                             else if (isVertical)
