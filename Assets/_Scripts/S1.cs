@@ -36,7 +36,7 @@ namespace Meta.XR.MRUtilityKit
         public void PlaceGameObject(Transform t0)
         {
             Instantiate(storyObj[0], t0.position, t0.rotation);
-
+            //check if there's any object placed on the table, if yes, then deactive the X mark & storyObj & UI
             if(GameObject.Find(storyObj[0].name)!=null)
             {    
                 placeMesh.SpawnOnFlatSurface(!isOn);            

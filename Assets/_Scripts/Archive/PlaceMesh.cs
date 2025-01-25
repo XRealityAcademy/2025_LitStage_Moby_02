@@ -18,6 +18,7 @@ namespace Meta.XR.MRUtilityKit
         public S1 s1;
         public GameObject xQuad;
         public Material xQuadMaterial;
+        public GameObject confirmUI;
         public GameObject mobyDickObj;
         public GameObject YCubePrefab;
         public GameObject PCubePrefab;
@@ -644,26 +645,34 @@ namespace Meta.XR.MRUtilityKit
 
                             if (isHorizontal)
                             {
-                                // Tint xQuad to yellow and enable spawning
+                                // Tint xQuad to yellow
                                 _debugCube.GetComponent<Renderer>().material.color = Color.yellow;
                                 if (OVRInput.GetDown(OVRInput.RawButton.A) && _debugCube != null)
                                 {
-                                    Vector3 offsetWall = _debugCube.transform.up;
-                                    mobyDickObj.transform.position =_debugCube.transform.position;
-                                    //Instantiate(mobyDickObj, mobyDickObj.transform.position, _debugCube.transform.rotation);
+                                    //confirmed UI shows up
+                                    confirmUI.SetActive(true);
 
-                                    Vector3 wallOffset = _debugNormal.transform.right;
-                                    Vector3 mobyDickObj_pos = _debugCube.transform.position;
-                                    // Instantiate(mobyDickObj, mobyDickObj_pos, _debugCube.transform.rotation);
+                                    //If the UI button "Yes" is pressed
+                                    ////place the cube on the surface
+                                    s1.PlaceGameObject(_debugCube.transform); 
 
-                                    s1.PlaceGameObject(_debugCube.transform);
+                                    //If the UI button "No" is pressed
+                                    ////deactive confirmed UI
+
+                                    //yellow mark being place around
+                                    // Vector3 offsetWall = _debugCube.transform.up;
+                                    // mobyDickObj.transform.position =_debugCube.transform.position;
+                                    // Vector3 wallOffset = _debugNormal.transform.right;
+                                    // Vector3 mobyDickObj_pos = _debugCube.transform.position;
+
+
                                     
                                     
                                 }
                             }
                             else if (isVertical)
                             {
-                                // Tint xQuad to red and disable spawning
+                                // Tint xQuad to red 
                                 _debugCube.GetComponent<Renderer>().material.color = Color.red;
                             }
                             SetLogsText("\n[{0}]\nAnchor: {1}\nPose Position: {2}\nPose Rotation: {3}",
