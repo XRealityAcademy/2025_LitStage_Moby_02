@@ -17,6 +17,8 @@ namespace Meta.XR.MRUtilityKit
     public class S1 : MonoBehaviour
     {
         public PlaceMesh placeMesh;
+        public GameObject confirmedUI;
+        public GameObject detectPlaneUI;
         public GameObject[] gameUI;
         public GameObject[] storyObj;
         private bool isOn;
@@ -43,6 +45,40 @@ namespace Meta.XR.MRUtilityKit
                 gameUI[0].SetActive (false);
             }
        
+        }
+
+        public void YesConfirm()
+        {
+            ////place the cube on the surface
+           // PlaceGameObject(placeMesh._debugCube.transform); 
+            confirmedUI.SetActive(false);
+
+        }
+
+        public void NoConfirm()
+        {
+            Destroy(storyObj[0]);
+            confirmedUI.SetActive(false);
+            detectPlaneUI.SetActive(true);
+            gameUI[0].SetActive (true); 
+            placeMesh.SpawnOnFlatSurface(isOn);   
+
+
+        }  
+        public void RemoveGameObject(Transform t0)
+        {      
+            //check if there's any object placed on the table, if yes, then deactive the X mark & storyObj & UI
+            if(GameObject.Find(storyObj[0].name)!=null)
+            {   
+                //destroy the current house/story object
+                Destroy(storyObj[0]);
+                //detect UI shows up
+                detectPlaneUI.SetActive(true);
+                gameUI[0].SetActive (true);  
+                //Keep looking for the new spot 
+                placeMesh.SpawnOnFlatSurface(isOn);         
+
+            }    
         }
 
 

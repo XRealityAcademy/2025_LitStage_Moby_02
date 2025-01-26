@@ -16,7 +16,9 @@ namespace Meta.XR.MRUtilityKit
     public class PlaceMesh : MonoBehaviour
     {
         public S1 s1;
-        public GameObject xQuad;
+        public GameObject _debugCube;
+        public GameObject detectPlaneUI;
+       // public GameObject xQuad;
         public Material xQuadMaterial;
         public GameObject confirmUI;
         public GameObject mobyDickObj;
@@ -53,7 +55,6 @@ namespace Meta.XR.MRUtilityKit
         private EffectMesh _globalMeshEffectMesh;
         private SpaceMapGPU _spaceMapGPU;
         private GameObject _debugAnchor;
-        private GameObject _debugCube;
         private GameObject _debugSphere;
         private Action _debugAction;
         private GameObject _debugNormal;
@@ -427,10 +428,10 @@ namespace Meta.XR.MRUtilityKit
         private void CreateDebugPrimitives()
         {
             //_debugCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            GameObject XQuad  = Instantiate( xQuad, Vector3.zero, Quaternion.identity);
+            GameObject XQuad  = Instantiate(_debugCube, Vector3.zero, Quaternion.identity);
             _debugCube = XQuad;
             _debugCube.name = "SceneDebugger_Cube";
-           // _debugCube.GetComponent<Renderer>().material=xQuadMaterial;
+            _debugCube.GetComponent<Renderer>().material=xQuadMaterial;
             _debugCube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             _debugCube.GetComponent<Collider>().enabled = false;
             _debugCube.SetActive(true);
@@ -645,16 +646,22 @@ namespace Meta.XR.MRUtilityKit
 
                             if (isHorizontal)
                             {
+                                
                                 // Tint xQuad to yellow
                                 _debugCube.GetComponent<Renderer>().material.color = Color.yellow;
                                 if (OVRInput.GetDown(OVRInput.RawButton.A) && _debugCube != null)
                                 {
+                                    detectPlaneUI.SetActive(false);
                                     //confirmed UI shows up
                                     confirmUI.SetActive(true);
+                                   // _debugCube.transform
+                                    
+                                    s1.PlaceGameObject(_debugCube.transform); 
+
 
                                     //If the UI button "Yes" is pressed
                                     ////place the cube on the surface
-                                    s1.PlaceGameObject(_debugCube.transform); 
+                                    
 
                                     //If the UI button "No" is pressed
                                     ////deactive confirmed UI
@@ -672,6 +679,7 @@ namespace Meta.XR.MRUtilityKit
                             }
                             else if (isVertical)
                             {
+                                
                                 // Tint xQuad to red 
                                 _debugCube.GetComponent<Renderer>().material.color = Color.red;
                             }
