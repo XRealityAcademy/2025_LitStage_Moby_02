@@ -7,11 +7,11 @@
       "dependencies": {
         "com.unity.modules.jsonserialize": "1.0.0",
         "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.mathematics": "1.3.1",
+        "com.unity.mathematics": "1.2.6",
         "com.unity.burst": "1.8.4",
-        "com.unity.collections": "1.5.1"
+        "com.unity.collections": "1.2.4"
       },
-      "hash": "bf011881ec4afb0e073fb241a2f18eb6edacfe7f"
+      "hash": "55a910587027e01c42f3d061316604accb3acb85"
     },
     "com.meta.xr.mrutilitykit": {
       "version": "72.0.0",
