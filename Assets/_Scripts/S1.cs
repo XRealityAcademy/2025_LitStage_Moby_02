@@ -22,7 +22,14 @@ namespace Meta.XR.MRUtilityKit
         public GameObject[] gameUI;
         public GameObject[] storyObj;
         private GameObject instantiatedStoryObj;
+        private SeaEffectController seaEffectController;
         private bool isOn;
+        [Header("Assign the Sea Effect GameObjects (each must have a Renderer)")]
+        [SerializeField] private List<GameObject> seaEffects;
+        [Header("Fade Settings (in seconds)")]
+        [SerializeField] private float fadeInDuration = 1f;    // Duration for fade in
+        [SerializeField] private float holdDuration = 1f;        // Time to remain fully opaque
+        [SerializeField] private float fadeOutDuration = 1f;     // Duration for fade out
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Awake()
@@ -33,6 +40,14 @@ namespace Meta.XR.MRUtilityKit
         void Start()
         {
 
+        }
+        void Update()
+        {
+             if (OVRInput.GetDown(OVRInput.RawButton.B) && storyObj[0] !=null )
+            {
+                 seaEffectController = storyObj[0].GetComponent<SeaEffectController>();  
+                 seaEffectController.SeaEffect();
+            }
         }
 
         // Update is called once per frame
@@ -99,11 +114,9 @@ namespace Meta.XR.MRUtilityKit
                 Debug.LogWarning("No object found to remove.");
             }
         }
-        
+
+
 
 
     }
-
-
-
 }
