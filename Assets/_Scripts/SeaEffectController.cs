@@ -28,6 +28,7 @@ public class SeaEffectController : MonoBehaviour
     }
     private void Start()
     {
+        SeaEffect();
         // foreach (GameObject effect in seaEffects)
         // {
         //     StartCoroutine(DoSeaEffect(effect));

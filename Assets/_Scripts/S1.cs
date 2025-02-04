@@ -19,6 +19,7 @@ namespace Meta.XR.MRUtilityKit
         public PlaceMesh placeMesh;
         public GameObject confirmedUI;
         public GameObject detectPlaneUI;
+        // public GameObject seaUnlock;
         public GameObject[] gameUI;
         public GameObject[] storyObj;
         private GameObject instantiatedStoryObj;
@@ -43,9 +44,11 @@ namespace Meta.XR.MRUtilityKit
         }
         void Update()
         {
-             if (OVRInput.GetDown(OVRInput.RawButton.B) && storyObj[0] !=null )
+             if (OVRInput.GetDown(OVRInput.RawButton.B) && instantiatedStoryObj !=null )
             {
-                 seaEffectController = storyObj[0].GetComponent<SeaEffectController>();  
+                 Transform seaUnlockTransfrom = instantiatedStoryObj.transform.Find("Sea_Unlock");
+                 seaUnlockTransfrom.gameObject.SetActive(true);   
+                 seaEffectController = instantiatedStoryObj.GetComponent<SeaEffectController>();  
                  seaEffectController.SeaEffect();
             }
         }

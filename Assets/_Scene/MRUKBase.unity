@@ -12018,9 +12018,7 @@ MonoBehaviour:
   gameUI:
   - {fileID: 1981368505}
   storyObj:
-  - {fileID: 2947720067581009222, guid: a05fe4002c7f9064c96061b64c7eb4f7, type: 3}
-  seaUnlock: {fileID: 0}
-  seaEffect: {fileID: 0}
+  - {fileID: 4802038953462699877, guid: a05fe4002c7f9064c96061b64c7eb4f7, type: 3}
   seaEffects: []
   fadeInDuration: 1
   holdDuration: 1
