@@ -5,12 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scene/Moby.unity
     guid: bbfb73fbd08bd5e47baec1dccc5b9011
   - enabled: 0
     path: "Assets/Samples/Meta XR Interaction \u200BSDK/72.0.0/Example Scenes/HandGrabExamples.unity"
     guid: 39ae0e546b9edc0408d3b11c6a7c2814
+  - enabled: 0
+    path: "Assets/Samples/Meta XR Interaction \u200BSDK/72.0.0/Example Scenes/SnapExamples.unity"
+    guid: 01ca63189b69e00488487d660224a315
+  - enabled: 1
+    path: Assets/_Scene/Test.unity
+    guid: 31e86bb172856e3429af533db5509cc6
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 8fcbe1c7630cfe040a218f0ee3e85c48, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
