@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/_Scene/Moby.unity
+    path: Assets/_Scene/Archive/Moby_old.unity
     guid: bbfb73fbd08bd5e47baec1dccc5b9011
   - enabled: 0
     path: "Assets/Samples/Meta XR Interaction \u200BSDK/72.0.0/Example Scenes/HandGrabExamples.unity"
@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: Assets/_Scene/Test2.unity
     guid: 96e493ba5a3d9c8439a23a369d615181
   - enabled: 1
-    path: Assets/_Scene/Test3.unity
+    path: Assets/_Scene/Moby.unity
     guid: a628ea71d40d83f41b45e152b47161f2
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 8fcbe1c7630cfe040a218f0ee3e85c48, type: 2}
