@@ -21,16 +21,13 @@ namespace Meta.XR.MRUtilityKit
         public GameObject detectPlaneUI;
         // public GameObject seaUnlock;
         public GameObject[] gameUI;
-        public GameObject[] storyObj;
+        public GameObject storyObj;
         private GameObject instantiatedStoryObj;
-        private SeaEffectController seaEffectController;
+        public GameObject menuControlUI;
+        public GameObject gamePanelUI;
+        
         private bool isOn;
-        [Header("Assign the Sea Effect GameObjects (each must have a Renderer)")]
-        [SerializeField] private List<GameObject> seaEffects;
-        [Header("Fade Settings (in seconds)")]
-        [SerializeField] private float fadeInDuration = 1f;    // Duration for fade in
-        [SerializeField] private float holdDuration = 1f;        // Time to remain fully opaque
-        [SerializeField] private float fadeOutDuration = 1f;     // Duration for fade out
+        private bool isMenuOn;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Awake()
@@ -44,12 +41,12 @@ namespace Meta.XR.MRUtilityKit
         }
         void Update()
         {
-             if (OVRInput.GetDown(OVRInput.RawButton.B) && instantiatedStoryObj !=null )
+
+            if (OVRInput.GetDown(OVRInput.RawButton.X))
             {
-                 Transform seaUnlockTransfrom = instantiatedStoryObj.transform.Find("Sea_Unlock");
-                 seaUnlockTransfrom.gameObject.SetActive(true);   
-                 seaEffectController = instantiatedStoryObj.GetComponent<SeaEffectController>();  
-                 seaEffectController.SeaEffect();
+                gamePanelUI.SetActive(!isMenuOn);
+                menuControlUI.SetActive(!isMenuOn);
+                isMenuOn =!isMenuOn;
             }
         }
 
@@ -58,7 +55,7 @@ namespace Meta.XR.MRUtilityKit
         {
             if (instantiatedStoryObj == null) // Ensure no duplicate instantiations
             {
-                instantiatedStoryObj = Instantiate(storyObj[0], t0.position, t0.rotation);
+                instantiatedStoryObj = Instantiate(storyObj, t0.position, t0.rotation);
                 Debug.Log($"Placed {instantiatedStoryObj.name} at {t0.position}");
                 // Check if the object exists, then deactivate relevant UI
                 if (instantiatedStoryObj != null)
@@ -117,6 +114,11 @@ namespace Meta.XR.MRUtilityKit
                 Debug.LogWarning("No object found to remove.");
             }
         }
+        public GameObject GetSpawnedObject()
+        {
+            return instantiatedStoryObj;
+        }
+
 
 
 

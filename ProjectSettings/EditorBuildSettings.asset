@@ -15,14 +15,23 @@ EditorBuildSettings:
     path: "Assets/Samples/Meta XR Interaction \u200BSDK/72.0.0/Example Scenes/SnapExamples.unity"
     guid: 01ca63189b69e00488487d660224a315
   - enabled: 0
-    path: Assets/_Scene/Test.unity
+    path: Assets/_Scene/Archive/Test.unity
     guid: 31e86bb172856e3429af533db5509cc6
   - enabled: 0
-    path: Assets/_Scene/Test2.unity
+    path: Assets/_Scene/Archive/Test2.unity
     guid: 96e493ba5a3d9c8439a23a369d615181
-  - enabled: 1
-    path: Assets/_Scene/Moby.unity
+  - enabled: 0
+    path: Assets/_Scene/Archive/Moby.unity
     guid: a628ea71d40d83f41b45e152b47161f2
+  - enabled: 0
+    path: Assets/_Scene/Archive/Moby_TestTableTopeMove.unity
+    guid: f7f777de32bca264e8ecb400312ff63c
+  - enabled: 0
+    path: Assets/_Scene/Archive/Test3.unity
+    guid: c952b4393b093934899338a0b53e6786
+  - enabled: 1
+    path: Assets/_Scene/Moby_PrefabSpawnCharacterMove.unity
+    guid: e3bec48bd93021042a0d30486ba3b861
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 8fcbe1c7630cfe040a218f0ee3e85c48, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
