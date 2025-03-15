@@ -1,3 +1,4 @@
+// InventorySlot.cs
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -21,6 +22,7 @@ public class InventorySlot : MonoBehaviour
     public void ClearSlot()
     {
         isEmpty = true;
+        currentItem = default;
         itemImage.sprite = null;
         itemImage.enabled = false;
         itemQuantity.text = "";
@@ -29,5 +31,10 @@ public class InventorySlot : MonoBehaviour
     public bool IsEmpty()
     {
         return isEmpty;
+    }
+
+    public InventoryItem GetItem()
+    {
+        return currentItem;
     }
 }

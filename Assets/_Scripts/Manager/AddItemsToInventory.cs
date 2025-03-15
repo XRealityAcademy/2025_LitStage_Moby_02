@@ -3,7 +3,7 @@ using UnityEngine;
 public class AddItemsToInventory : MonoBehaviour
 {
     public InventoryManager inventoryManager;
-    public ItemData[] items;
+    public InventoryItem[] items;
 
     void Start()
     {
@@ -17,24 +17,14 @@ public class AddItemsToInventory : MonoBehaviour
             InventoryItem newItem = new InventoryItem
             {
                 itemName = item.itemName,
-                description = item.itemDescription,
+                description = item.description + "\nPrice: " + item.price + " gold",
                 healthPoints = item.healthPoints,
-                itemPrice = item.itemPrice,
-                quantity = 1,
-                itemImage = item.itemSprite
+                quantity = item.quantity,
+                price = item.price,
+                itemImage = item.itemImage
             };
             inventoryManager.AddItem(newItem);
         }
     }
-}
-
-[System.Serializable]
-public struct ItemData
-{
-    public string itemName;
-    public string itemDescription;
-    public int healthPoints;
-    public int itemPrice;
-    public Sprite itemSprite;
 }
 
